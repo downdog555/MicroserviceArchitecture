@@ -1,13 +1,19 @@
 const express = require('express');
 const helmet = require('helmet');
-const jwt = require('jsonwebtoken');
-const jwte = require('express-jwt');
+const jwtAuth  = require('./helpers/JWTHelper')
+const cookieParser = require("cookie-parser");
 //Define your routes in a new file for each use
 const routes = require('./routes');
 const authRoutes = require('./routes/auth');
-
+const DomainAuth = require('./helpers/DomainBindingHelper');
+const bodyParser = require('body-parser');
 const app = express(); 
 app.use(helmet());
+app.use(cookieParser());
+app.use(DomainAuth);
+app.use(bodyParser.urlencoded({ extended: true })); 
+//Add The JWT Auth
+//app.use(jwtAuth);
 //Then Add the routes to the gateway here
 app.use('/', routes);
 app.use('/', authRoutes);
