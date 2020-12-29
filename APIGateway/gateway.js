@@ -13,7 +13,13 @@ app.use(cookieParser());
 app.use(DomainAuth);
 app.use(bodyParser.urlencoded({ extended: true })); 
 //Add The JWT Auth
-//app.use(jwtAuth);
+app.use(jwtAuth);
+//Add Error Handling
+app.use(function (err, req, res, next) {
+    if (err.name === 'UnauthorizedError') {
+      res.status(403).send('Invalid Credentials Please Login');
+    }
+  });
 //Then Add the routes to the gateway here
 app.use('/', routes);
 app.use('/', authRoutes);

@@ -9,7 +9,11 @@ async function DomainAuth(req,res,next){
     var originAddress = req.connection.remoteAddress;
     var resp = await DomainModel.findOne({Domain: domain}).exec();
     if(resp !== null && resp.ValidIP.includes(originAddress)){
-    next();
+    req.ConnectionString = resp.ConnectionString;
+
+    req.CurrentIssuer = domain;
+        next();
+
     } else {
         res.status(403).json('Error, Not Connected To Correct Network.');
     }
