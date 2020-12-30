@@ -1,15 +1,11 @@
 const jwt = require('express-jwt');
+const mongoose = require('mongoose');
+const DomainSecretSchema =  require('../models/DomainSecretModel');
+const secretAddition = require("../helpers/SecretAddition");
+const defaultConnection = require("./DefaultConnection");
 
-var secretCallback = function(req,payload,done){
-    var issuer = payload.iss;
-    //Load secret based on issuer...
-    
-    
-    
-    
-        var secret = "asdasdasda";
-        done(null, secret);
-    }
+const domainSecret = defaultConnection.model('DomainSecrets', DomainSecretSchema, 'DomainSecrets');
+
     var isRevokedCallback = function(req, payload, done){
         var issuer = payload.iss;
         var tokenId = payload.jti;
@@ -29,5 +25,10 @@ var secretCallback = function(req,payload,done){
     var getIssuer = function(req,payload, done  ){
        return req.CurrentIssuer;
     }
-const auth = jwt({secret: secretCallback, algorithms: ['HS512'], isRevoked: isRevokedCallback, getToken: getTokenCallback, issuer: getIssuer}).unless({path:['/Auth/Login', '/favicon.ico']});
+
+
+        const auth = jwt({secret: secretAddition, algorithms: ['HS512'], isRevoked: isRevokedCallback, getToken: getTokenCallback, issuer: getIssuer}).unless({path:['/Auth/Login', '/favicon.ico']});
+ 
+    
+
 module.exports = auth;
