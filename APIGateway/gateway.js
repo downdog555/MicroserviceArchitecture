@@ -7,15 +7,10 @@ const routes = require('./routes');
 const authRoutes = require('./routes/auth');
 const DomainAuth = require('./helpers/DomainBindingHelper');
 const bodyParser = require('body-parser');
-
-
-
 const app = express(); 
 app.use(helmet());
 app.use(cookieParser());
 app.use(DomainAuth);
-
-console.log(global.channel);
 app.use(bodyParser.urlencoded({ extended: true })); 
 //Add The JWT Auth
 app.use(jwtAuth);

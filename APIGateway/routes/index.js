@@ -5,10 +5,7 @@ const help = require('../helpers/PublisherHelper');
 //order is important
 // routes.use(async function (res,req,next ){ await DomainAuth(res,req,next)});
 routes.get('/', async (req,res)=>{
-    var a = global.connection;
-    var b = global.channel;
- var message =   await  help.SendMessage("sdadasdsadas", "test" );
- console.log("response: " + message.content.toString());
+   
  
     res.status(200).json({message:'Hellow world'});
 });

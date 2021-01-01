@@ -8,6 +8,8 @@ const jwt = require('jsonwebtoken');
 const secretAddition = require("../helpers/SecretAddition");
 const { v4: uuidv4 } = require('uuid');
 const defaultConnecton = require("../helpers/DefaultConnection");
+const userReq = require('../../Contracts/GetUser/GetUserRequest');
+const help = require('../helpers/PublisherHelper');
 //order is important
 //routes.use(async function (res,req,next ){ await DomainAuth(res,req,next)});
 routes.post('/Auth/Login', async (req,res)=>{
@@ -19,9 +21,12 @@ routes.post('/Auth/Login', async (req,res)=>{
  
     const userModel = mongoose.model('Users', userSchema, 'Users');
     const domainSecret = defaultConnecton.model('DomainSecrets', DomainSecretSchema, 'DomainSecrets');
-    var resp = await userModel.findOne({username: username}).exec();
-
-    if(resp !== null){
+    // var resp = await userModel.findOne({username: username});
+    //Send Request to microservice
+    var uReq =  {connectionString, username};
+    var response =  await  help.SendMessage(JSON.stringify(uReq), "User.GetUser" );
+    var resp = JSON.parse(response.content.toString());
+    if(resp.success === undefined){
     //and compare
     if (await bcrypt.compare(password, resp.password)){
          //load secret from env
