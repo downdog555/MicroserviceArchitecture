@@ -1,5 +1,4 @@
 # MicroserviceArchitecture
-MicroserviceArchitecture
 This project is a baseline for a microservice architecture using nodejs and rabbitmq as well as mongodb
 
 The general concept is of a multitenented intranet type system.
